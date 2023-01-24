@@ -9,6 +9,13 @@ class MotorDriver:
         pins and turning off the motor for safety. 
         @param en_pin (There will be several pin parameters)
         """
+        # If enpin is high motor/vice versa
+        en_pin.low ()
+        # Setup Timer
+        tim = pyb.Timer(timer, freq=20000) 
+        # Setup Channel
+        ch1 = tim.channel(1, pyb.Timer.PWM, pin=in1pin)
+        ch2 = tim.channel(2, pyb.Timer.PWM, pin=in2pin)
         print ("Creating a motor driver")
 
     def set_duty_cycle (self, level):
@@ -22,5 +29,11 @@ class MotorDriver:
         """
         print (f"Setting duty cycle to {level}")
         
+        
+        
 if __name__ == '__main__'
 # Section for testing code?
+'''
+moe = MotorDriver (a_pin, another_pin, a_timer)
+moe.set_duty_cycle (-42)
+'''
