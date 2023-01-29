@@ -22,13 +22,16 @@ class MotorDriver:
         en_pin.low()
         # Setup Timer
         tim = pyb.Timer(timer, freq=20000) 
+        self.tim = tim
         # Setup Channel
         ch1 = tim.channel(1, pyb.Timer.PWM, pin=in1pin)
+        self.ch1 = ch1
         ch2 = tim.channel(2, pyb.Timer.PWM, pin=in2pin)
-        return(ch1,ch2,tim)
+        self.ch2 = ch2
+        #return(ch1,ch2,tim)
         print ("Creating a motor driver")
 
-    def set_duty_cycle (self, level, ch1, ch2):
+    def set_duty_cycle (self, level):
         """!
         This method sets the duty cycle to be sent
         to the motor to the given level. Positive values
@@ -42,20 +45,36 @@ class MotorDriver:
                to be called for PWM command
         """
         if level >= 0:
-            ch1.pulse_width_percent(level)
-            ch2.pulse_width_percent(0)
+            self.ch1.pulse_width_percent(level)
+            self.ch2.pulse_width_percent(0)
         else:
             level = level/(-1)
-            ch2.pulse_width_percent(level)
-            ch1.pulse_width_percent(0)
-        
+            self.ch2.pulse_width_percent(level)
+            self.ch1.pulse_width_percent(0)
         print (f"Setting duty cycle to {level}")
         
         
         
-#if __name__ == __main__:
+if __name__ == '__main__':
     # Section for testing code?
     '''
     moe = MotorDriver (a_pin, another_pin, a_timer)
     moe.set_duty_cycle (-42)
     '''
+    pinA10 = pyb.Pin(pyb.Pin.board.PA10, pyb.Pin.OUT_PP)
+    pinB4 = pyb.Pin(pyb.Pin.board.PB4, pyb.Pin.OUT_PP)
+    pinB5 = pyb.Pin(pyb.Pin.board.PB5, pyb.Pin.OUT_PP)
+    tim = 3
+    
+    moe = MotorDriver(pinA10,pinB4,pinB5,tim)
+    moe.set_duty_cycle(-42)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
