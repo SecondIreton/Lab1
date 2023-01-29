@@ -20,6 +20,7 @@ class MotorDriver:
         """
         # If enpin is high motor/vice versa
         en_pin.low()
+        self.en_pin = en_pin
         # Setup Timer
         tim = pyb.Timer(timer, freq=20000) 
         self.tim = tim
@@ -44,6 +45,7 @@ class MotorDriver:
         @param ch2 A variable representing timer channel 2 
                to be called for PWM command
         """
+        self.en_pin.high()
         if level >= 0:
             self.ch1.pulse_width_percent(level)
             self.ch2.pulse_width_percent(0)
@@ -66,8 +68,15 @@ if __name__ == '__main__':
     pinB5 = pyb.Pin(pyb.Pin.board.PB5, pyb.Pin.OUT_PP)
     tim = 3
     
-    moe = MotorDriver(pinA10,pinB4,pinB5,tim)
-    moe.set_duty_cycle(-42)
+   # moe = MotorDriver(pinA10,pinB4,pinB5,tim)
+    #moe.set_duty_cycle(50)
+    try:
+        #moe = MotorDriver(pinA10,pinB4,pinB5,tim)
+        #moe.set_duty_cycle(50)
+        main()
+    except KeyboardInterrupt:
+        en_pin.low()
+        print('Interrupted :/')
     
     
     
