@@ -13,7 +13,8 @@ class EncoderReader:
     Compute the value of the encoder reading
     @returns The encoder reading
     """
-    timer = None
+    absolute_position = 0
+    former_position = 0
 
     def __init__(self, pinA, pinB, timerNum):
         """!
@@ -25,14 +26,25 @@ class EncoderReader:
 
     def read(self):
         """!
-        @returns The encoder reading
+        @returns The position of the motor from the zero point
         """
-        return self.timer.counter()
+        current_position = self.timer.counter()
+        if current_position - self.former_position > 3000:
+            difference = current_position - 4000 + self.former_position
+        elif current_position - self.former_position < -3000:
+            difference = current_position + 4000 - self.former_position
+        else:
+            difference = current_position - self.former_position
+        self.former_position = current_position
+        self.absolute_position += difference
+        return self.absolute_position
 
     def zero(self):
         """!
         Sets the time counter to 0
         """
+        self.absolute_position = 0
+        self.former_position = 0
         self.timer.counter(0)
 
 if __name__ == "__main__":
