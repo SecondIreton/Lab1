@@ -68,8 +68,8 @@ if __name__ == '__main__':
     pinB5 = pyb.Pin(pyb.Pin.board.PB5, pyb.Pin.OUT_PP)
     tim = 3
     
-   # moe = MotorDriver(pinA10,pinB4,pinB5,tim)
-    #moe.set_duty_cycle(50)
+    moe = MotorDriver(pinA10,pinB4,pinB5,tim)
+    moe.set_duty_cycle(50)
     try:
         #moe = MotorDriver(pinA10,pinB4,pinB5,tim)
         #moe.set_duty_cycle(50)
